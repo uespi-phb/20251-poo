@@ -1,0 +1,17 @@
+{
+    "name": "hello",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "node src/index.ts",
+        "build": "rimraf build && tsc"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "devDependencies": {
+        "rimraf": "^6.0.1",
+        "typescript": "^5.8.2"
+    }
+}
