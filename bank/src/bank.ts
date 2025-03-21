@@ -1,13 +1,11 @@
 
-class Bank {
+export class Bank {
     private id: number
     private name: string
-
-    constructor(bankId: number, bankName: string) {
-        console.log('Bank()')
-
-        this.id = bankId
-        this.name = bankName
+    
+    constructor(id: number, name: string) {
+        this.id = id
+        this.name = name
     }
 
     // GETTER
@@ -33,11 +31,4 @@ class Bank {
     }
 }
 
-const b1 = new Bank(990, 'BANCO SIMPLEX S/A')
-let b2 = new Bank(995, 'BANCO TOTAL S/A')
-
-b1.setId(104)
-b1.setName('CAIXA ECONÔMICA FEDERAL')
-
-console.log('Cod  Banco:', b1.getId())
-console.log('Nome Banco:', b1.getName())
+export const bank = new Bank(123, 'BANCO EXEMPLO S/A')
