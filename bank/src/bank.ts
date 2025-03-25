@@ -1,34 +1,28 @@
+import { Account } from './account'
+import { formatText } from './utils'
 
 export class Bank {
-    private id: number
-    private name: string
+    public readonly id: number
+    public readonly name: string
+    public readonly accounts: Account[]
     
     constructor(id: number, name: string) {
         this.id = id
         this.name = name
+        this.accounts = []
     }
 
-    // GETTER
-    getId(): number {
-        return this.id
+    createAccount(accountId: number, accountAgency: number, accountHolder: string): void {
+        const account = new Account(this, accountId, accountAgency, accountHolder)
+        this.accounts.push(account)
     }
 
-    // SETTER
-    setId(id: number): void {
-        if(id > 0) {
-            this.id = id;
-        }
-    }
+    showAccounts(): void {
+        console.log(this.name)
+        console.log('RELAÇÃO DE CONTAS')
+        console.log('-'.repeat(40))
+        console.log(formatText('AG\tCONTA\tTITULAR', [-5, -7, 28]))
+        console.log('---- ------ ----------------------------')
 
-    // GETTER
-    getName(): string {
-        return this.name
-    }
-
-    // SETTER
-    setName(name: string): void {
-        this.name = name
     }
 }
-
-export const bank = new Bank(123, 'BANCO EXEMPLO S/A')

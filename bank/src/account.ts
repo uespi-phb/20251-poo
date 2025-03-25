@@ -1,14 +1,22 @@
-import { bank, Bank } from "./bank"
+import { Bank } from "./bank"
 
 export class Account {
-    private bank: Bank = bank
+    public readonly bank: Bank
+    public readonly id: number
+    public readonly agency: number
+    public readonly holder: string
     private balance: number
 
     constructor(
-        private id: number, 
-        private agency: number, 
-        private holder: string
+        bank: Bank,
+        id: number, 
+        agency: number, 
+        holder: string
     ) {
+        this.bank = bank
+        this.id = id
+        this.agency = agency
+        this.holder = holder
         this.balance = 0.00
     }
 
@@ -27,7 +35,7 @@ export class Account {
     }
 
     showBalance(): void {
-         console.log(this.bank.getName())
+         console.log(this.bank.name)
          console.log('AG:', this.agency, 'C/C:', this.id)
          console.log('-'.repeat(40))
          console.log('15/03/2025 SALDO   R$', this.balance)

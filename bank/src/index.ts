@@ -1,12 +1,11 @@
 import { Account } from './account'
+import { Bank } from './bank'
 
-const a1 = new Account(12345, 23, 'FULANO DE CASTRO')
-const a2 = new Account(98765, 23, 'BELTRANO DA SILVA')
-const a3 = new Account(82366, 23, 'CICRANO OLIVEIRA')
 
-a1.deposit(1000.00)
-a1.withdraw(200.00)
-a1.transfer(300.00, a2)
+const bank = new Bank(999, 'BANCO EXEMPLO S/A')
 
-a1.showBalance()
-a2.showBalance()
+bank.createAccount(12345, 987, 'FULANO DE CASTRO')
+bank.createAccount(98765, 123, 'BELTRANO DA SILVA')
+bank.createAccount(82366, 333, 'CICRANO OLIVEIRA')
+
+bank.showAccounts()
