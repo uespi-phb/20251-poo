@@ -1,16 +1,47 @@
 
-export function formatText(data: string, colWidths: number[]): string {
+export function alignText(data: string, colFormat: string[]): string {
     const columns = data.split('\t')
-    let formmatedText = ''
+    let formattedText = ''
 
     for (let index in columns) {
-        const data = columns[index]
-        const width = Math.abs(colWidths[index])
-        formmatedText += (colWidths[index] < 0) 
-                            ? data.padEnd(width) 
-                            : data.padStart(width)
+        let   data = columns[index]
+        const format = colFormat[index]
+        let width: number
+
+        switch(format[0]) {
+            case '>':
+                width = parseInt(format.substring(1))
+                formattedText += data.padStart(width)
+                break
+            case '<':
+                width = parseInt(format.substring(1))
+                formattedText += data.padEnd(width)
+                break
+            default:
+                width = parseInt(format)
+                const leftWidth = Math.floor((width - data.length) / 2)
+                data = data.padStart(data.length + leftWidth)
+                formattedText += data.padEnd(width)
+        }
+
+        if(parseInt(index) < columns.length - 1) {
+            formattedText += ' '
+        }
     }
 
-    return formmatedText
+    return formattedText
 }
 
+export function alignLine(colWidths: number[]) {
+    let line = ''
+
+    for (const index in colWidths) {
+        line += '-'.repeat(colWidths[index])
+
+        if(parseInt(index) < colWidths.length - 1) {
+            line += ' '
+        }
+    }
+
+    return line
+}

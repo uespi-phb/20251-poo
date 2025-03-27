@@ -1,4 +1,5 @@
 import { Bank } from "./bank"
+import { alignLine, alignText } from "./utils"
 
 export class Account {
     public readonly bank: Bank
@@ -35,11 +36,11 @@ export class Account {
     }
 
     showBalance(): void {
-         console.log(this.bank.name)
-         console.log('AG:', this.agency, 'C/C:', this.id)
-         console.log('-'.repeat(40))
-         console.log('15/03/2025 SALDO   R$', this.balance)
-         console.log('-'.repeat(40))
+         console.log(alignText(this.bank.name,['40']))
+         console.log(alignText(`AG: ${this.agency}\tC/C: ${this.id}`,['<20', '>19']))
+         console.log(alignLine([40]))
+         console.log(alignText(`15/03/2025\tSALDO R\$ ${this.balance}`,['<15','>24']))
+         console.log(alignLine([40]))
          console.log()
     }
 }
