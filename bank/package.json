@@ -4,14 +4,17 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node src/index.ts",
+    "dev": "clear && ts-node src/index.ts",
     "build": "rm -rf ./build && tsc"
   },
   "engines": {
     "node": "^22"
   },
-  "dependencies": {},
+  "dependencies": {
+    "intl": "^1.2.5"
+  },
   "devDependencies": {
+    "@types/intl": "^1.2.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   }
