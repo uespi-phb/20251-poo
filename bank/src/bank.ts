@@ -12,9 +12,10 @@ export class Bank {
     this.accounts = []
   }
 
-  createAccount(agency: number, id: number, accountHolder: string): void {
+  createAccount(agency: number, id: number, accountHolder: string): Account {
     const account = new Account(this, id, agency, accountHolder)
     this.accounts.push(account)
+    return account
   }
 
   getAccount(agency: number, id: number): Account | undefined {
