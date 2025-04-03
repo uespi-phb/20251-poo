@@ -1,4 +1,5 @@
 import { Account } from './account'
+import { SpecialAccount } from './special-account'
 import { alignLine, alignText } from './utils'
 
 export class Bank {
@@ -12,8 +13,19 @@ export class Bank {
     this.accounts = []
   }
 
-  createAccount(agency: number, id: number, accountHolder: string): Account {
-    const account = new Account(this, id, agency, accountHolder)
+  createAccount(
+    agency: number,
+    id: number,
+    accountHolder: string,
+    limit?: number
+  ): Account {
+    let account: Account
+
+    if (limit === undefined) {
+      account = new Account(this, agency, id, accountHolder)
+    } else {
+      account = new SpecialAccount(this, agency, id, accountHolder, limit)
+    }
     this.accounts.push(account)
     return account
   }
