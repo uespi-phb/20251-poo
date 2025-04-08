@@ -1,0 +1,17 @@
+{
+  "name": "shapes",
+  "description": "Handle basic geometric shapes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "clear && ts-node src/shapes.ts",
+    "build": "rm -rf ./build && tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
