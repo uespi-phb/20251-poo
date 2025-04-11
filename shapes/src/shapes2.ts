@@ -2,12 +2,13 @@
  */
 abstract class Shape {
   public readonly id: string
+  public readonly type: string
 
-  constructor(id: string) {
+  constructor(id: string, type: string) {
     this.id = id
+    this.type = type
   }
 
-  public abstract type(): string
   public abstract area(): number
   public abstract perimeter(): number
 
@@ -27,8 +28,8 @@ abstract class Shape {
 abstract class EdgeShape extends Shape {
   public readonly edges: number[]
 
-  constructor(id: string, edges: number[]) {
-    super(id)
+  constructor(id: string, type: string, edges: number[]) {
+    super(id, type)
     this.edges = [...edges]
     this.validate()
   }
@@ -56,12 +57,8 @@ abstract class NoEdgeShape extends Shape {}
  */
 class Triangle extends EdgeShape {
   constructor(id: string, edge1: number, edge2: number, edge3: number) {
-    super(id, [edge1, edge2, edge3])
+    super(id, 'Triangle', [edge1, edge2, edge3])
     this.validate()
-  }
-
-  public type(): string {
-    return 'Triangle'
   }
 
   protected validate(): void {
@@ -88,13 +85,14 @@ class Triangle extends EdgeShape {
 /* Rect
  */
 class Rect extends EdgeShape {
-  constructor(id: string, width: number, height: number) {
-    super(id, [width, height, width, height])
+  constructor(
+    id: string,
+    type: string | null = null,
+    width: number,
+    height: number
+  ) {
+    super(id, type ?? 'Rect', [width, height, width, height])
     this.validate()
-  }
-
-  public type(): string {
-    return 'Rect'
   }
 
   area(): number {
@@ -106,12 +104,8 @@ class Rect extends EdgeShape {
  */
 class Square extends Rect {
   constructor(id: string, edge: number) {
-    super(id, edge, edge)
+    super(id, 'Square', edge, edge)
     this.validate()
-  }
-
-  public type(): string {
-    return 'Square'
   }
 }
 
@@ -121,12 +115,8 @@ class Circle extends NoEdgeShape {
   public readonly radius: number
 
   constructor(id: string, radius: number) {
-    super(id)
+    super(id, 'Circle')
     this.radius = radius
-  }
-
-  public type(): string {
-    return 'Circle'
   }
 
   protected validate(): void {
@@ -146,14 +136,14 @@ class Circle extends NoEdgeShape {
 
 const shapes: Shape[] = [
   new Triangle('t1', 3, 4, 5),
-  new Rect('r1', 10, 20),
+  new Rect('r1', null, 10, 20),
   new Square('s1', 5),
   new Circle('c1', 4),
 ]
 
 for (const shape of shapes) {
-  const type = shape.type()
+  const type = shape.type
   const perimeter = shape.perimeter().toFixed(1)
   const area = shape.area().toFixed(1)
-  console.log(`${type}\t${shape.id}\tperimeter: ${perimeter}\tarea: ${area}`)
+  console.log(`${type}\t${shape}\tperimeter: ${perimeter}\tarea: ${area}`)
 }
