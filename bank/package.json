@@ -11,12 +11,13 @@
     "node": "^22"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.7.0",
     "fs": "^0.0.1-security",
     "intl": "^1.2.5"
   },
   "devDependencies": {
-    "@types/node": "^22.14.1",
     "@types/intl": "^1.2.2",
+    "@types/node": "^22.14.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   }

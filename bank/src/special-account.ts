@@ -9,6 +9,15 @@ export class SpecialAccount extends Account {
     this.limit = limit
   }
 
+  static fromModel(model: AccountModel): SpecialAccount {
+    return new SpecialAccount(
+      model.agency,
+      model.id,
+      model.holder,
+      model.limit ?? 0.0
+    )
+  }
+
   protected showFooter(): void {
     const limit = formatCurrency(this.limit, false, 'C')
     const available = formatCurrency(this.balance + this.limit, false, 'C')

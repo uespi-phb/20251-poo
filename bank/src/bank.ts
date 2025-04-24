@@ -1,4 +1,5 @@
 import { Account } from './account'
+import { SpecialAccount } from './special-account'
 import { alignLine, alignText } from './utils'
 
 import fs from 'fs'
@@ -47,12 +48,13 @@ export class Bank {
     console.log(alignText(this.name, ['40']))
     console.log(alignText('RELAÇÃO DE CONTAS', ['40']))
     console.log(alignLine([40]))
-    console.log(alignText('AG\tCONTA\tTITULAR', ['<4', '<6', '<28']))
-    console.log(alignLine([4, 6, 28]))
+    console.log(alignText('AG\tCONTA\tT\tTITULAR', ['<4', '<6', '1', '<26']))
+    console.log(alignLine([4, 6, 1, 28]))
 
     for (const account of this.accounts) {
-      const text = `${account.agency}\t${account.id}\t${account.holder}`
-      console.log(alignText(text, ['>4', '>6', '<28']))
+      const type = account instanceof SpecialAccount ? 'E' : 'R'
+      const text = `${account.agency}\t${account.id}\t${type}\t${account.holder}`
+      console.log(alignText(text, ['>4', '>6', '1', '<26']))
     }
     console.log(alignLine([40]))
   }
@@ -76,8 +78,19 @@ export class Bank {
     json = fs.readFileSync(Bank.accountsFileName).toString()
     const accountData = JSON.parse(json)
     for (const model of accountData) {
-      console.log(model)
-      bank.addAccount(Account.fromModel(model))
+      let account: Account
+
+      switch (model.type) {
+        case 0:
+          account = Account.fromModel(model)
+          break
+        case 1:
+          account = SpecialAccount.fromModel(model)
+          break
+        default:
+          throw new Error(`Invalid account type: ${model.type}`)
+      }
+      bank.addAccount(account)
     }
 
     return bank

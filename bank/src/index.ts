@@ -1,8 +1,4 @@
-import { Account } from './account'
 import { Bank } from './bank'
-import { SpecialAccount } from './special-account'
-
-console.log('*** BEGIN')
 
 const bank = Bank.load()
 

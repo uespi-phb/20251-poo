@@ -1,5 +1,4 @@
 import { Bank } from './bank'
-import { SpecialAccount } from './special-account'
 import { Transaction, TransactionType } from './transaction'
 import {
   alignLine,
@@ -41,22 +40,8 @@ export class Account {
     this.balance = 0.0
   }
 
-  static fromModel(model: AccountModel) {
-    let account: Account
-
-    switch (model.type) {
-      case 1:
-        account = new SpecialAccount(
-          model.agency,
-          model.id,
-          model.holder,
-          model.limit ?? 0
-        )
-        break
-      default:
-        account = new Account(model.agency, model.id, model.holder)
-    }
-    return account
+  static fromModel(model: AccountModel): Account {
+    return new Account(model.agency, model.id, model.holder)
   }
 
   get bank(): Bank {
