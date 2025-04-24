@@ -1,21 +1,17 @@
+import { Account } from './account'
 import { Bank } from './bank'
+import { SpecialAccount } from './special-account'
 
-console.log('** BEGIN **')
+console.log('*** BEGIN')
 
-const bank = new Bank(999, 'BANCO EXEMPLO S/A')
+const bank = Bank.load()
 
-const a1 = bank.createAccount(987, 12345, 'FULANO DE CASTRO')
-const a2 = bank.createAccount(123, 98765, 'BELTRANO DA SILVA')
-const s3 = bank.createAccount(123, 98765, 'BELTRANO DA SILVA', 1000.0)
+// const bank = new Bank(999, 'BANCO EXEMPLO S/A')
 
-// bank.showAccounts()
+// bank.addAccount(new Account(987, 12345, 'FULANO DE CASTRO'))
+// bank.addAccount(new Account(123, 98765, 'BELTRANO DA SILVA'))
+// bank.addAccount(new SpecialAccount(123, 76340, 'CICRANO DE OLIVEIRA', 1000.0))
 
-// ac1.showBalance()
-a1.deposit(1500.0)
-a1.withdraw(500.0)
-a1.transfer(300.0, s3)
+bank.showAccounts()
 
-a1.showStatement()
-s3.showStatement()
-
-console.log('** END **')
+bank.save()

@@ -1,4 +1,5 @@
 import { Bank } from './bank'
+import { SpecialAccount } from './special-account'
 import { Transaction, TransactionType } from './transaction'
 import {
   alignLine,
@@ -8,21 +9,64 @@ import {
   formatTime,
 } from './utils'
 
+export enum AccountType {
+  regular,
+  special,
+}
+
+export type AccountModel = {
+  type: AccountType
+  bank: number
+  agency: number
+  id: number
+  holder: string
+  balance: number
+  limit?: number
+}
+
 export class Account {
-  public readonly bank: Bank
+  private _bank?: Bank
   public readonly id: number
   public readonly agency: number
   public readonly holder: string
-  private transactions: Transaction[]
   protected balance: number
+  private transactions: Transaction[]
 
-  constructor(bank: Bank, agency: number, id: number, holder: string) {
-    this.bank = bank
+  constructor(agency: number, id: number, holder: string) {
+    this._bank = undefined
     this.agency = agency
     this.id = id
     this.holder = holder
     this.transactions = []
     this.balance = 0.0
+  }
+
+  static fromModel(model: AccountModel) {
+    let account: Account
+
+    switch (model.type) {
+      case 1:
+        account = new SpecialAccount(
+          model.agency,
+          model.id,
+          model.holder,
+          model.limit ?? 0
+        )
+        break
+      default:
+        account = new Account(model.agency, model.id, model.holder)
+    }
+    return account
+  }
+
+  get bank(): Bank {
+    if (this._bank === undefined)
+      throw new Error('Ofphan account. Bank not defined.')
+    return this._bank
+  }
+
+  set bank(bank: Bank) {
+    this._bank = bank
   }
 
   private checkValue(value: number): void {
@@ -31,6 +75,17 @@ export class Account {
 
   private checkBalance(value: number): void {
     if (value > this.balance) throw new Error('Insufficient funds')
+  }
+
+  toModel(): AccountModel {
+    return {
+      type: AccountType.regular,
+      bank: this.bank.id,
+      agency: this.agency,
+      id: this.id,
+      holder: this.holder,
+      balance: this.balance,
+    }
   }
 
   deposit(value: number): void {
