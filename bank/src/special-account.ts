@@ -9,15 +9,6 @@ export class SpecialAccount extends Account {
     this.limit = limit
   }
 
-  static fromModel(model: AccountModel): SpecialAccount {
-    return new SpecialAccount(
-      model.agency,
-      model.id,
-      model.holder,
-      model.limit ?? 0.0
-    )
-  }
-
   protected showFooter(): void {
     const limit = formatCurrency(this.limit, false, 'C')
     const available = formatCurrency(this.balance + this.limit, false, 'C')
@@ -26,16 +17,17 @@ export class SpecialAccount extends Account {
     console.log(alignText(`DISPONÍVEL\t${available}`, ['>27', '>12']))
   }
 
-  toModel(): AccountModel {
-    const model1 = {
-      bank: this.bank.id,
-      agency: this.agency,
-      id: this.id,
-      holder: this.holder,
-      balance: this.balance,
-    }
+  static fromJSON(model: AccountModel): SpecialAccount {
+    return new SpecialAccount(
+      model.agency,
+      model.id,
+      model.holder,
+      model.limit ?? 0.0
+    )
+  }
 
-    const model = super.toModel()
+  toJSON(): AccountModel {
+    const model = super.toJSON()
     return {
       ...model,
       type: AccountType.special,

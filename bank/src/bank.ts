@@ -23,7 +23,7 @@ export class Bank {
     this.accounts = []
   }
 
-  toModel(): BankModel {
+  toJSON(): BankModel {
     return {
       id: this.id,
       name: this.name,
@@ -60,20 +60,25 @@ export class Bank {
   }
 
   save(): void {
-    const bank = this.toModel()
-    fs.writeFileSync(Bank.bankFileName, JSON.stringify(bank))
+    fs.writeFileSync(Bank.bankFileName, JSON.stringify(this))
+    fs.writeFileSync(Bank.accountsFileName, JSON.stringify(this.accounts))
 
-    const accounts: object[] = []
-    for (const account of this.accounts) {
-      accounts.push(account.toModel())
-    }
-    fs.writeFileSync(Bank.accountsFileName, JSON.stringify(accounts))
+    // const accounts: object[] = []
+    // for (const account of this.accounts) {
+    //   accounts.push(account.toJSON())
+    // }
+    // fs.writeFileSync(Bank.accountsFileName, JSON.stringify(this.accounts))
   }
 
   static load(): Bank {
     let json = fs.readFileSync(Bank.bankFileName).toString()
-    const bankData = JSON.parse(json)
-    const bank = new Bank(bankData.id, bankData.name)
+
+    // const bankData = JSON.parse(json)
+    // const bank = new Bank(bankData.id, bankData.name)
+    const bank = JSON.parse(json, (key: string, value: any) => {
+      if (key === '') return new Bank(value.id, value.name)
+      return value
+    })
 
     json = fs.readFileSync(Bank.accountsFileName).toString()
     const accountData = JSON.parse(json)
@@ -82,10 +87,10 @@ export class Bank {
 
       switch (model.type) {
         case 0:
-          account = Account.fromModel(model)
+          account = Account.fromJSON(model)
           break
         case 1:
-          account = SpecialAccount.fromModel(model)
+          account = SpecialAccount.fromJSON(model)
           break
         default:
           throw new Error(`Invalid account type: ${model.type}`)

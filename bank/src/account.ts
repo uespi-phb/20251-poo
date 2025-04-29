@@ -40,10 +40,6 @@ export class Account {
     this.balance = 0.0
   }
 
-  static fromModel(model: AccountModel): Account {
-    return new Account(model.agency, model.id, model.holder)
-  }
-
   get bank(): Bank {
     if (this._bank === undefined)
       throw new Error('Ofphan account. Bank not defined.')
@@ -62,7 +58,11 @@ export class Account {
     if (value > this.balance) throw new Error('Insufficient funds')
   }
 
-  toModel(): AccountModel {
+  static fromJSON(model: AccountModel): Account {
+    return new Account(model.agency, model.id, model.holder)
+  }
+
+  toJSON(): AccountModel {
     return {
       type: AccountType.regular,
       bank: this.bank.id,

@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "clear && ts-node src/index.ts",
+    "sample": "clear && ts-node src/sample.ts",
     "build": "rm -rf ./build && tsc"
   },
   "engines": {
