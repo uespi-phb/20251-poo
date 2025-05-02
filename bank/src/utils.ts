@@ -76,3 +76,17 @@ export function formatTime(date: Date): string {
 
   return locale.format(date)
 }
+
+export function random(n: number): number {
+  return Math.floor(Math.random() * n)
+}
+
+export function randomRange(min: number, max: number): number {
+  return random(max - min + 1) + min
+}
+
+export function randomChoice<T>(array: T[]): T {
+  if (array.length === 0) throw new Error('Array is empty')
+  const index = random(array.length)
+  return array[index]
+}

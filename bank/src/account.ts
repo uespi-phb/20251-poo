@@ -15,11 +15,11 @@ export enum AccountType {
 
 export type AccountModel = {
   type: AccountType
-  bank: number
   agency: number
   id: number
   holder: string
   balance: number
+  transactions: Transaction[]
   limit?: number
 }
 
@@ -59,27 +59,34 @@ export class Account {
   }
 
   static fromJSON(model: AccountModel): Account {
-    return new Account(model.agency, model.id, model.holder)
+    const account = new Account(model.agency, model.id, model.holder)
+    for (const trans of model.transactions) {
+      account.addTransaction(Transaction.fromJSON(trans))
+    }
+    return account
   }
 
   toJSON(): AccountModel {
     return {
       type: AccountType.regular,
-      bank: this.bank.id,
       agency: this.agency,
       id: this.id,
       holder: this.holder,
       balance: this.balance,
+      transactions: this.transactions,
     }
+  }
+
+  protected addTransaction(transaction: Transaction): void {
+    this.transactions.push(transaction)
+    this.balance += transaction.signedValue()
   }
 
   deposit(value: number): void {
     this.checkValue(value)
 
     const trans = new Transaction(new Date(), TransactionType.deposit, value)
-    this.transactions.push(trans)
-
-    this.balance += value
+    this.addTransaction(trans)
   }
 
   withdraw(value: number): void {
@@ -87,9 +94,7 @@ export class Account {
     this.checkBalance(value)
 
     const trans = new Transaction(new Date(), TransactionType.widthdraw, value)
-    this.transactions.push(trans)
-
-    this.balance -= value
+    this.addTransaction(trans)
   }
 
   transfer(value: number, toAccount: Account) {
@@ -97,12 +102,10 @@ export class Account {
     this.checkBalance(value)
 
     const debit = new Transaction(new Date(), TransactionType.debit, value)
-    this.transactions.push(debit)
-    this.balance -= value
+    this.addTransaction(debit)
 
     const credit = new Transaction(new Date(), TransactionType.credit, value)
-    toAccount.transactions.push(credit)
-    toAccount.balance += value
+    this.addTransaction(credit)
   }
 
   protected showHeader(): void {
@@ -124,7 +127,7 @@ export class Account {
   protected showFooter(): void {
     const suffix = this.balance >= 0 ? 'C' : 'D'
     const balance = formatCurrency(this.balance, false, suffix)
-    console.log(alignText(`SALDO\t${balance}`, ['>27', '>12']))
+    console.log(alignText(`SALDO\t${balance}\n`, ['>27', '>13']))
   }
 
   showBalance(): void {

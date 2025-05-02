@@ -5,6 +5,12 @@ export enum TransactionType {
   debit,
 }
 
+export type TransactionModel = {
+  type: TransactionType
+  dateTime: Date
+  value: number
+}
+
 export class Transaction {
   public readonly dateTime: Date
   public readonly type: TransactionType
@@ -14,6 +20,24 @@ export class Transaction {
     this.dateTime = dateTime
     this.type = type
     this.value = value
+  }
+
+  static fromJSON(model: TransactionModel): Transaction {
+    return new Transaction(new Date(model.dateTime), model.type, model.value)
+  }
+
+  signedValue(): number {
+    let value: number
+    switch (this.type) {
+      case TransactionType.deposit:
+      case TransactionType.credit:
+        value = this.value
+        break
+      case TransactionType.widthdraw:
+      case TransactionType.debit:
+        value = -this.value
+    }
+    return value
   }
 
   isCredit(): boolean {

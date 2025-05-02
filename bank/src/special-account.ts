@@ -1,4 +1,5 @@
 import { Account, AccountModel, AccountType } from './account'
+import { Transaction } from './transaction'
 import { alignText, formatCurrency } from './utils'
 
 export class SpecialAccount extends Account {
@@ -14,16 +15,22 @@ export class SpecialAccount extends Account {
     const available = formatCurrency(this.balance + this.limit, false, 'C')
     super.showFooter()
     console.log(alignText(`LIMITE\t${limit}`, ['>27', '>12']))
-    console.log(alignText(`DISPONÍVEL\t${available}`, ['>27', '>12']))
+    console.log(alignText(`DISPONÍVEL\t${available}\n`, ['>27', '>13']))
   }
 
   static fromJSON(model: AccountModel): SpecialAccount {
-    return new SpecialAccount(
+    const account = new SpecialAccount(
       model.agency,
       model.id,
       model.holder,
       model.limit ?? 0.0
     )
+
+    for (const trans of model.transactions) {
+      account.addTransaction(Transaction.fromJSON(trans))
+    }
+
+    return account
   }
 
   toJSON(): AccountModel {
