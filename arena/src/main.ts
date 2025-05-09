@@ -1,5 +1,5 @@
-import { BattleArena } from "./battle-arena";
-import { Dragon, Elf, Troll } from "./creatures";
+import { BattleArena } from './battle-arena'
+import { Dragon, Elf, Troll } from './creatures'
 
 const arena = new BattleArena()
 

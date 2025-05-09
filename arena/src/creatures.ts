@@ -1,4 +1,3 @@
-
 export abstract class Creature {
   public readonly name: string
   protected health: number
@@ -16,14 +15,20 @@ export abstract class Creature {
     return this.health > 0
   }
 
+  isDead(): boolean {
+    return this.health <= 0
+  }
+
   defend(amount: number): void {
     this.health -= amount
   }
 
   attack(target: Creature): string {
     target.defend(this.attackPower)
-    return `${this.name} attacked ${target.name} for ${this.attackPower} damage.` +
-           `${target.name} health is now ${target.health}.`
+    return (
+      `${this.name} attacked ${target.name} for ${this.attackPower} damage.` +
+      `${target.name} health is now ${target.health}.`
+    )
   }
 }
 
@@ -35,9 +40,9 @@ export class Dragon extends Creature {
     super(name, Dragon.initialHealth, Dragon.initialPowerAttack)
   }
 
-   move(): string {
+  move(): string {
     return 'soars through the skies'
-   }
+  }
 }
 
 export class Elf extends Creature {
@@ -48,9 +53,9 @@ export class Elf extends Creature {
     super(name, Elf.initialHealth, Elf.initialPowerAttack)
   }
 
-   move(): string {
+  move(): string {
     return 'glides through the forest'
-   }
+  }
 }
 
 export class Troll extends Creature {
@@ -61,8 +66,7 @@ export class Troll extends Creature {
     super(name, Troll.initialHealth, Troll.initialPowerAttack)
   }
 
-   move(): string {
+  move(): string {
     return 'charges with heavy steps'
-   }
+  }
 }
-
