@@ -1,5 +1,5 @@
-import { Creature } from "./creatures";
-import { randomChoice } from "./utils";
+import { Creature } from './creatures'
+import { randomChoice } from './utils'
 
 export class BattleArena {
   private readonly creatures: Creature[] = []
@@ -11,8 +11,8 @@ export class BattleArena {
   private aliveCreatures(): number {
     let count = 0
 
-    for(const creature of this.creatures) {
-      if(creature.isAlive()) count++
+    for (const creature of this.creatures) {
+      if (creature.isAlive()) count++
     }
 
     return count
@@ -21,9 +21,9 @@ export class BattleArena {
   public startBattle(): string[] {
     const moves: string[] = []
 
-    if(this.creatures.length < 2) throw new Error('Battle must have at leats 2 creatures')
+    if (this.creatures.length < 2) throw new Error('Battle must have at leats 2 creatures')
 
-    for(const creature of this.creatures) {
+    for (const creature of this.creatures) {
       const move = creature.move()
       moves.push(`${creature.name} moves: ${creature.name} ${move}.`)
     }
@@ -37,11 +37,12 @@ export class BattleArena {
 
       moves.push(source.attack(target))
 
-      if (!target.isAlive()){
+      if (target.isDead()) {
+        const index = this.creatures.indexOf(target)
+        this.creatures.splice(index, 1)
         moves.push(`${target.name} has fallen.`)
-    }
-
-    } while(this.aliveCreatures() > 1)
+      }
+    } while (this.aliveCreatures() > 1)
 
     moves.push(`${source.name} is the last creature standing!`)
 
