@@ -36,6 +36,7 @@
         "eslint-import-resolver-typescript": "^3",
         "eslint-plugin-import": "^2",
         "eslint-plugin-jest": "^28",
+        "eslint-plugin-json-files": "^4.4.2",
         "eslint-plugin-markdown": "^5",
         "eslint-plugin-n": "^17",
         "eslint-plugin-prettier": "^5",
