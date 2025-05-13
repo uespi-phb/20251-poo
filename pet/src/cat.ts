@@ -31,4 +31,12 @@ export class Cat extends Animal {
         return BreedSize.huge
     }
   }
+
+  speciesName(): string {
+    return 'cat'
+  }
+
+  breedName(): string {
+    return CatBreed[this.breed]
+  }
 }

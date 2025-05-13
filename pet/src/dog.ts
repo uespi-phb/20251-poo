@@ -30,4 +30,12 @@ export class Dog extends Animal {
         return BreedSize.huge
     }
   }
+
+  speciesName(): string {
+    return 'dog'
+  }
+
+  breedName(): string {
+    return DogBreed[this.breed]
+  }
 }

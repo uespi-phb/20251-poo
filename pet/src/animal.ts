@@ -1,6 +1,6 @@
 import { BreedSize } from './size'
 
-export class Animal {
+export abstract class Animal {
   public readonly name: string
   public readonly size: BreedSize
 
@@ -8,4 +8,7 @@ export class Animal {
     this.name = name
     this.size = size
   }
+
+  abstract speciesName(): string
+  abstract breedName(): string
 }
