@@ -14,7 +14,8 @@
   "dependencies": {
     "@faker-js/faker": "^9.7.0",
     "fs": "^0.0.1-security",
-    "intl": "^1.2.5"
+    "intl": "^1.2.5",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@types/intl": "^1.2.2",
