@@ -1,11 +1,19 @@
 import { Bank } from './bank'
+import { Database } from './database'
 
-const bank = Bank.load()
+Database.connect()
 
-bank.showAccounts()
+const bankId = 1
+const bank = Bank.load(bankId)
 
-for (const account of bank.accounts) {
-  account.showStatement()
-}
+console.log(bank)
 
-// bank.save()
+// bank.showAccounts()
+
+// for (const account of bank.accounts) {
+//   account.showStatement()
+// }
+
+// // bank.save()
+
+Database.disconnect()

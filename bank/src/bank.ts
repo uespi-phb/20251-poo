@@ -1,4 +1,5 @@
 import { Account } from './account'
+import { Database } from './database'
 import { SpecialAccount } from './special-account'
 import { alignLine, alignText } from './utils'
 
@@ -72,28 +73,36 @@ export class Bank {
     // fs.writeFileSync(Bank.accountsFileName, JSON.stringify(this.accounts))
   }
 
-  static load(): Bank {
-    let json = fs.readFileSync(Bank.bankFileName).toString()
+  static load(bankId: number): Bank {
+    type BankModel = {id: number, name: string}
+    const sql = 'select id,name from bank where id=?'
+    let bank: Bank | undefined
 
-    const bankData = JSON.parse(json)
-    const bank = new Bank(bankData.id, bankData.name)
-
-    for (const model of bankData.accounts) {
-      let account: Account
-
-      switch (model.type) {
-        case 0:
-          account = Account.fromJSON(model)
-          break
-        case 1:
-          account = SpecialAccount.fromJSON(model)
-          break
-        default:
-          throw new Error(`Invalid account type: ${model.type}`)
-      }
-      bank.addAccount(account)
-    }
-
+    console.log(sql)
+    Database.query.get(sql, [bankId], (error, row) => {
+        if (error) throw error
+        console.log(row)
+        bank = new Bank((row as BankModel).id, (row as BankModel).name)
+    })
+    if (!bank) throw new Error('Bank not found')
     return bank
+
+    // const bank = new Bank(bankData.id, bankData.name)
+
+    // for (const model of bankData.accounts) {
+    //   let account: Account
+
+    //   switch (model.type) {
+    //     case 0:
+    //       account = Account.fromJSON(model)
+    //       break
+    //     case 1:
+    //       account = SpecialAccount.fromJSON(model)
+    //       break
+    //     default:
+    //       throw new Error(`Invalid account type: ${model.type}`)
+    //   }
+    //   bank.addAccount(account)
+    // }
   }
 }

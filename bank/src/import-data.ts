@@ -79,11 +79,10 @@ function importTransactions(db: Database, jsonFile: string) {
     }
 }
 
-sqlite3.verbose()
 const db = new Database('./bank.db')
 
-//importBanks(db, './data/banks.json')
-// importAccounts(db, './data/accounts.json')
+importBanks(db, './data/banks.json')
+importAccounts(db, './data/accounts.json')
 importTransactions(db, './data/transactions.json')
 
 db.close()
