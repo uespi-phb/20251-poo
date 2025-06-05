@@ -1,0 +1,49 @@
+[
+  {
+    "type": 0,
+    "bank": 999,
+    "agency": 987,
+    "id": 12345,
+    "holder": "FULANO DE CASTRO",
+    "balance": 1652,
+    "transactions": [
+      { "dateTime": "2025-05-02T14:01:18.025Z", "type": 0, "value": 1267 },
+      { "dateTime": "2025-05-02T14:01:18.025Z", "type": 0, "value": 344 },
+      { "dateTime": "2025-05-02T14:01:18.025Z", "type": 1, "value": 394 },
+      { "dateTime": "2025-05-02T14:01:18.025Z", "type": 0, "value": 435 }
+    ]
+  },
+  {
+    "type": 0,
+    "bank": 999,
+    "agency": 123,
+    "id": 98765,
+    "holder": "BELTRANO DA SILVA",
+    "balance": 2237,
+    "transactions": [
+      { "dateTime": "2025-05-02T14:01:18.044Z", "type": 0, "value": 1556 },
+      { "dateTime": "2025-05-02T14:01:18.044Z", "type": 0, "value": 270 },
+      { "dateTime": "2025-05-02T14:01:18.044Z", "type": 1, "value": 416 },
+      { "dateTime": "2025-05-02T14:01:18.044Z", "type": 0, "value": 347 },
+      { "dateTime": "2025-05-02T14:01:18.046Z", "type": 2, "value": 480 }
+    ]
+  },
+  {
+    "type": 1,
+    "bank": 999,
+    "agency": 123,
+    "id": 76340,
+    "holder": "CICRANO DE OLIVEIRA",
+    "balance": 1709,
+    "transactions": [
+      { "dateTime": "2025-05-02T14:01:18.045Z", "type": 0, "value": 1517 },
+      { "dateTime": "2025-05-02T14:01:18.045Z", "type": 1, "value": 339 },
+      { "dateTime": "2025-05-02T14:01:18.045Z", "type": 0, "value": 115 },
+      { "dateTime": "2025-05-02T14:01:18.045Z", "type": 0, "value": 128 },
+      { "dateTime": "2025-05-02T14:01:18.046Z", "type": 0, "value": 463 },
+      { "dateTime": "2025-05-02T14:01:18.046Z", "type": 0, "value": 305 },
+      { "dateTime": "2025-05-02T14:01:18.046Z", "type": 3, "value": 480 }
+    ],
+    "limit": 1000
+  }
+]

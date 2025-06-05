@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "es2021",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "outDir": "./build",
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "types": [
+      "node",
+    ],
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      },
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*",
+      ]
+    }
+  },
+  "include": [
+    "./*.ts",
+    "./src/**/*.ts",
+  ],
+  "exclude": [
+    "./build",
+    "./node_modules",
+    "./tsconfig.json"
+  ]
+}

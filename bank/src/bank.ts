@@ -3,34 +3,37 @@ import { Database } from './database'
 import { SpecialAccount } from './special-account'
 import { alignLine, alignText } from './utils'
 
-import fs from 'fs'
-
 export type BankModel = {
   id: number
   name: string
-  accounts: Account[]
 }
 
 export class Bank {
-  private static bankFileName = 'bank.json'
-  private static accountsFileName = 'accounts.json'
-
   public readonly id: number
   public readonly name: string
-  public readonly accounts: Account[]
 
   constructor(id: number, name: string) {
     this.id = id
     this.name = name
-    this.accounts = []
+  }
+
+  static fromJSON(model: BankModel): Bank {
+    return new Bank(model.id, model.name)
   }
 
   toJSON(): BankModel {
     return {
       id: this.id,
       name: this.name,
-      accounts: this.accounts,
     }
+  }
+
+  getAccounts(): Account[] {
+    return Account.loadAccounts(this.id)
+  }
+
+  getAccount(id: number): Account {
+    return Account.loadAccount(this.id, id)
   }
 
   addAccount(account: Account): void {
@@ -63,9 +66,8 @@ export class Bank {
   }
 
   save(): void {
-    fs.writeFileSync(Bank.bankFileName, JSON.stringify(this))
+    // fs.writeFileSync(Bank.bankFileName, JSON.stringify(this))
     // fs.writeFileSync(Bank.accountsFileName, JSON.stringify(this.accounts))
-
     // const accounts: object[] = []
     // for (const account of this.accounts) {
     //   accounts.push(account.toJSON())
@@ -74,17 +76,15 @@ export class Bank {
   }
 
   static load(bankId: number): Bank {
-    type BankModel = {id: number, name: string}
-    const sql = 'select id,name from bank where id=?'
-    let bank: Bank | undefined
+    let sql = 'select id,name from bank where id=$1'
+    let bankData = Database.queryOne<BankModel>(sql, [bankId])
 
-    console.log(sql)
-    Database.query.get(sql, [bankId], (error, row) => {
-        if (error) throw error
-        console.log(row)
-        bank = new Bank((row as BankModel).id, (row as BankModel).name)
-    })
-    if (!bank) throw new Error('Bank not found')
+    if (!bankData) throw new Error('Bank not found')
+
+    const bank = new Bank(bankData.id, bankData.name)
+    bank.accounts.length = 0
+    bank.accounts.push(...Account.loadAccounts(bank))
+
     return bank
 
     // const bank = new Bank(bankData.id, bankData.name)

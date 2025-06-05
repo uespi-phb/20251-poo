@@ -1,4 +1,5 @@
 import { Bank } from './bank'
+import { Database } from './database'
 import { Transaction, TransactionType } from './transaction'
 import {
   alignLine,
@@ -14,27 +15,33 @@ export enum AccountType {
 }
 
 export type AccountModel = {
+  id: number
   type: AccountType
   agency: number
-  id: number
+  accountNumber: number
   holder: string
-  balance: number
-  transactions: Transaction[]
   limit?: number
 }
 
 export class Account {
   private _bank?: Bank
   public readonly id: number
+  public readonly accountNumber: number
   public readonly agency: number
   public readonly holder: string
   protected balance: number
   private transactions: Transaction[]
 
-  constructor(agency: number, id: number, holder: string) {
+  constructor(
+    id: number,
+    agency: number,
+    accountNumber: number,
+    holder: string
+  ) {
     this._bank = undefined
-    this.agency = agency
     this.id = id
+    this.agency = agency
+    this.accountNumber = accountNumber
     this.holder = holder
     this.transactions = []
     this.balance = 0.0
@@ -58,23 +65,24 @@ export class Account {
     if (value > this.balance) throw new Error('Insufficient funds')
   }
 
-  static fromJSON(model: AccountModel): Account {
-    const account = new Account(model.agency, model.id, model.holder)
-    for (const trans of model.transactions) {
-      account.addTransaction(Transaction.fromJSON(trans))
-    }
-    return account
+  static loadAccount(bankId: number, accountId: number): Account {
+    const sql =
+      'select id,agency,number,holder from account where bank_id=$1 and id=$2'
+    const account = Database.queryMany(sql, [bankId, accountId])
+    if (!account) throw new Error(`Account not found: ${accountId}`)
+    return new Account()
   }
 
-  toJSON(): AccountModel {
-    return {
-      type: AccountType.regular,
-      agency: this.agency,
-      id: this.id,
-      holder: this.holder,
-      balance: this.balance,
-      transactions: this.transactions,
+  static loadAccounts(bankId: number): Account[] {
+    const accounts: Account[] = []
+    const sql = 'select id,agency,number,holder from account where bank_id=$1'
+    const rows = Database.queryMany(sql, [bankId])
+
+    for (const row of rows) {
+      const account = new Account()
     }
+
+    return accounts
   }
 
   protected addTransaction(transaction: Transaction): void {
@@ -118,7 +126,10 @@ export class Account {
       alignText(`${date}\t${this.bank.name}\t${time}`, ['<8', '25', '>5'])
     )
     console.log(
-      alignText(`AG  : ${this.agency}\tC/C: ${this.id}`, ['<20', '>19'])
+      alignText(`AG  : ${this.agency}\tC/C: ${this.accountNumber}`, [
+        '<20',
+        '>19',
+      ])
     )
     console.log(`NOME: ${this.holder}`)
     console.log(alignLine([40]))

@@ -90,3 +90,36 @@ export function randomChoice<T>(array: T[]): T {
   const index = random(array.length)
   return array[index]
 }
+
+export function formatQuery(sql: string, params: any[] = []): string {
+  let formattedSql = sql
+  let paramIndex = 0
+
+  formattedSql = formattedSql.replace(/\?/g, () => {
+    if (paramIndex >= params.length) {
+      return '?'
+    }
+
+    const param = params[paramIndex++]
+
+    if (param === null || param === undefined) {
+      return 'NULL'
+    }
+
+    if (typeof param === 'string') {
+      return `'${param.replace(/'/g, "''")}'`
+    }
+
+    if (typeof param === 'boolean') {
+      return param ? '1' : '0'
+    }
+
+    if (param instanceof Date) {
+      return `'${param.toISOString()}'`
+    }
+
+    return String(param)
+  })
+
+  return formattedSql
+}

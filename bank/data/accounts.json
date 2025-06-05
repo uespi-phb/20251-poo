@@ -1,183 +1,182 @@
 [
   {
-    "id": 1001,
+    "number": 1001,
     "agency": 1234,
     "holder": "Maria Silva Santos",
     "bankId": 1
   },
   {
-    "id": 1002,
+    "number": 1002,
     "agency": 1234,
     "holder": "João Carlos Oliveira",
     "bankId": 1
   },
   {
-    "id": 1003,
+    "number": 1003,
     "agency": 1235,
     "holder": "Ana Paula Costa",
     "bankId": 1
   },
   {
-    "id": 1004,
+    "number": 1004,
     "agency": 1235,
     "holder": "Pedro Henrique Lima",
     "bankId": 1
   },
   {
-    "id": 1005,
+    "number": 1005,
     "agency": 1236,
     "holder": "Carla Fernanda Souza",
     "bankId": 1
   },
   {
-    "id": 1006,
+    "number": 1006,
     "agency": 1236,
     "holder": "Roberto Carlos Mendes",
     "bankId": 1
   },
   {
-    "id": 1007,
+    "number": 1007,
     "agency": 1237,
     "holder": "Luciana Pereira Alves",
     "bankId": 1
   },
   {
-    "id": 1008,
+    "number": 1008,
     "agency": 1237,
     "holder": "Fernando Silva Rodrigues",
     "bankId": 1
   },
   {
-    "id": 1009,
+    "number": 1009,
     "agency": 1238,
     "holder": "Juliana Martins Cruz",
     "bankId": 1
   },
   {
-    "id": 1010,
+    "number": 1010,
     "agency": 1238,
     "holder": "Rafael Henrique Barbosa",
     "bankId": 1
   },
   {
-    "id": 2001,
+    "number": 2001,
     "agency": 5678,
     "holder": "Patrícia Gomes Silva",
     "bankId": 2
   },
   {
-    "id": 2002,
+    "number": 2002,
     "agency": 5678,
     "holder": "André Luis Santos",
     "bankId": 2
   },
   {
-    "id": 2003,
+    "number": 2003,
     "agency": 5679,
     "holder": "Camila Rodrigues Lima",
     "bankId": 2
   },
   {
-    "id": 2004,
+    "number": 2004,
     "agency": 5679,
     "holder": "Marcos Antonio Ferreira",
     "bankId": 2
   },
   {
-    "id": 2005,
+    "number": 2005,
     "agency": 5680,
     "holder": "Gabriela Costa Oliveira",
     "bankId": 2
   },
   {
-    "id": 2006,
+    "number": 2006,
     "agency": 5680,
     "holder": "Diego Almeida Souza",
     "bankId": 2
   },
   {
-    "id": 2007,
+    "number": 2007,
     "agency": 5681,
     "holder": "Renata Silva Martins",
     "bankId": 2
   },
   {
-    "id": 2008,
+    "number": 2008,
     "agency": 5681,
     "holder": "Thiago Pereira Santos",
     "bankId": 2
   },
   {
-    "id": 2009,
+    "number": 2009,
     "agency": 5682,
     "holder": "Aline Fernandes Costa",
     "bankId": 2
   },
   {
-    "id": 2010,
+    "number": 2010,
     "agency": 5682,
     "holder": "Bruno Henrique Lima",
     "bankId": 2
   },
   {
-    "id": 3001,
+    "number": 3001,
     "agency": 9012,
     "holder": "Vanessa Alves Rodrigues",
     "bankId": 3
   },
   {
-    "id": 3002,
+    "number": 3002,
     "agency": 9012,
     "holder": "Leonardo Silva Cruz",
     "bankId": 3
   },
   {
-    "id": 3003,
+    "number": 3003,
     "agency": 9013,
     "holder": "Mônica Santos Oliveira",
     "bankId": 3
   },
   {
-    "id": 3004,
+    "number": 3004,
     "agency": 9013,
     "holder": "Gustavo Lima Ferreira",
     "bankId": 3
   },
   {
-    "id": 3005,
+    "number": 3005,
     "agency": 9014,
     "holder": "Tatiana Costa Almeida",
     "bankId": 3
   },
   {
-    "id": 3006,
+    "number": 3006,
     "agency": 9014,
     "holder": "Rodrigo Martins Silva",
     "bankId": 3
   },
   {
-    "id": 3007,
+    "number": 3007,
     "agency": 9015,
     "holder": "Priscila Souza Santos",
     "bankId": 3
   },
   {
-    "id": 3008,
+    "number": 3008,
     "agency": 9015,
     "holder": "Vinícius Oliveira Lima",
     "bankId": 3
   },
   {
-    "id": 3009,
+    "number": 3009,
     "agency": 9016,
     "holder": "Larissa Ferreira Costa",
     "bankId": 3
   },
   {
-    "id": 3010,
+    "number": 3010,
     "agency": 9016,
     "holder": "Marcelo Alves Rodrigues",
     "bankId": 3
   }
 ]
-

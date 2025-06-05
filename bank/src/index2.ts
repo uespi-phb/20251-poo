@@ -1,7 +1,7 @@
 import { Bank } from './bank'
 import { random, randomChoice, randomRange } from './utils'
 
-const bank = Bank.load()
+// const bank = Bank.load()
 
 // const bank = new Bank(999, 'BANCO EXEMPLO S/A')
 

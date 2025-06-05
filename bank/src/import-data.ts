@@ -1,88 +1,88 @@
-
-import sqlite3, { Database } from 'sqlite3'
+import BetterSqlite3, { Database as SQLiteDatabase } from 'better-sqlite3'
 import fs from 'fs'
+import path from 'path'
+import { formatQuery } from './utils'
 
-function formatQuery(sql: string, params: any[] = []): string {
-    let formattedSql = sql
-    let paramIndex = 0
-
-    // Substituir cada ? pelo valor correspondente
-    formattedSql = formattedSql.replace(/\?/g, () => {
-      if (paramIndex >= params.length) {
-        return '?'
-      }
-
-      const param = params[paramIndex++]
-      
-      if (param === null || param === undefined) {
-        return 'NULL'
-      }
-      
-      if (typeof param === 'string') {
-        // Escapar aspas simples para visualização
-        return `'${param.replace(/'/g, "''")}'`
-      }
-      
-      if (typeof param === 'boolean') {
-        return param ? '1' : '0'
-      }
-      
-      if (param instanceof Date) {
-        return `'${param.toISOString()}'`
-      }
-      
-      return String(param)
-    })
-
-    return formattedSql
+type Sample = {
+  id: number
+  name: string
+  tall: boolean
 }
 
-function importBanks(db: Database, jsonFile: string) {
-    let json = fs.readFileSync(jsonFile).toString()
-    const bankData = JSON.parse(json)
+export default function execQuery(
+  db: SQLiteDatabase,
+  sql: string,
+  params?: unknown[]
+) {
+  console.log(formatQuery(sql, params))
+  if (params) {
+    db.prepare(sql).run(params)
+  } else {
+    db.prepare(sql).run()
+  }
+}
 
-    db.run('delete from bank')
-    for(const bank of bankData) {
-        const sql = 'insert into bank(id,name) values(?,?)'
-        db.run(sql,[bank.id, bank.name.toUpperCase()])
+function clearData(db: SQLiteDatabase) {
+  execQuery(db, 'pragma foreign_keys = ON')
+
+  execQuery(db, 'delete from "transaction"')
+  execQuery(db, 'delete from "account"')
+  execQuery(db, 'delete from "bank"')
+  execQuery(db, 'delete from "sqlite_sequence"')
+}
+
+function importBanks(db: SQLiteDatabase, jsonFile: string) {
+  let json = fs.readFileSync(jsonFile).toString()
+  const bankData = JSON.parse(json)
+
+  for (const bank of bankData) {
+    const sql = 'insert into bank(id,name) values(?,?)'
+    const params = [bank.id, bank.name.toUpperCase()]
+    execQuery(db, sql, params)
+  }
+}
+
+function importAccounts(db: SQLiteDatabase, jsonFile: string) {
+  let json = fs.readFileSync(jsonFile).toString()
+  const accountData = JSON.parse(json)
+
+  const sql =
+    'insert into account(agency,number,holder,bank_id) values(?,?,?,?)'
+  for (const account of accountData) {
+    let params = [
+      account.agency,
+      account.number,
+      account.holder.toUpperCase(),
+      account.bankId,
+    ]
+
+    execQuery(db, sql, params)
+  }
+}
+
+function importTransactions(db: SQLiteDatabase, jsonFile: string) {
+  let json = fs.readFileSync(jsonFile).toString()
+  const transData = JSON.parse(json)
+
+  const accountQuery = db.prepare('select id from account where number=?')
+  const sql =
+    'insert into "transaction"(date,value,type,account_id) values(?,?,?,?)'
+
+  for (const data of transData) {
+    const { id } = accountQuery.get(data.accountId) as { id: number }
+    for (const t of data.transactions) {
+      const params = [t.dateTime, t.value, t.type, id]
+      execQuery(db, sql, params)
     }
-    
+  }
 }
 
-function importAccounts(db: Database, jsonFile: string) {
-    let json = fs.readFileSync(jsonFile).toString()
-    const accountData = JSON.parse(json)
+const rootDir = path.resolve(__dirname, '..')
+const db = new BetterSqlite3(`${rootDir}/bank.db`)
 
-    db.run('delete from account')
-    for(const account of accountData) {
-        const sql = 'insert into account(id,agency,holder,bank_id) values(?,?,?,?)'
-
-        console.log(account.holder)
-        db.run(sql,[account.id, account.agency, account.holder.toUpperCase(), account.bankId])
-    }
-}
-
-
-function importTransactions(db: Database, jsonFile: string) {
-    let json = fs.readFileSync(jsonFile).toString()
-    const transData = JSON.parse(json)
-
-    db.run('delete from "transaction"')
-    for(const data of transData) {
-        const sql = 'insert into "transaction"(date,value,type,account_id) values(?,?,?,?);'
-
-        for(const t of data.transactions) {
-            const params = [t.dateTime, t.value, t.type, data.accountId]
-            console.log(formatQuery(sql,params))
-            db.run(sql,params)
-        }
-    }
-}
-
-const db = new Database('./bank.db')
-
-importBanks(db, './data/banks.json')
-importAccounts(db, './data/accounts.json')
-importTransactions(db, './data/transactions.json')
+clearData(db)
+importBanks(db, `${rootDir}/data/banks.json`)
+importAccounts(db, `${rootDir}/data/accounts.json`)
+importTransactions(db, `${rootDir}/data/transactions.json`)
 
 db.close()

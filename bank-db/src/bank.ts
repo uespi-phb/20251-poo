@@ -1,0 +1,103 @@
+import { Account } from './account'
+import { Database } from './database'
+import { SpecialAccount } from './special-account'
+import { alignLine, alignText } from './utils'
+
+import fs from 'fs'
+
+export type BankModel = {
+  id: number
+  name: string
+  accounts: Account[]
+}
+
+export class Bank {
+  private static bankFileName = 'bank.json'
+  private static accountsFileName = 'accounts.json'
+
+  public readonly id: number
+  public readonly name: string
+  public readonly accounts: Account[]
+
+  constructor(id: number, name: string) {
+    this.id = id
+    this.name = name
+    this.accounts = []
+  }
+
+  toJSON(): BankModel {
+    return {
+      id: this.id,
+      name: this.name,
+      accounts: this.accounts,
+    }
+  }
+
+  addAccount(account: Account): void {
+    account.bank = this
+    this.accounts.push(account)
+  }
+
+  getAccount(agency: number, id: number): Account | undefined {
+    for (const account of this.accounts) {
+      if (account.agency === agency && account.id === id) {
+        return account
+      }
+    }
+    return undefined
+  }
+
+  showAccounts(): void {
+    console.log(alignText(this.name, ['40']))
+    console.log(alignText('RELAÇÃO DE CONTAS', ['40']))
+    console.log(alignLine([40]))
+    console.log(alignText('AG\tCONTA\tT\tTITULAR', ['<4', '<6', '1', '<26']))
+    console.log(alignLine([4, 6, 1, 26]))
+
+    for (const account of this.accounts) {
+      const type = account instanceof SpecialAccount ? 'E' : 'R'
+      const text = `${account.agency}\t${account.id}\t${type}\t${account.holder}`
+      console.log(alignText(text, ['>4', '>6', '1', '<26']))
+    }
+    console.log(alignLine([40]), '\n')
+  }
+
+  save(): void {
+    fs.writeFileSync(Bank.bankFileName, JSON.stringify(this))
+    // fs.writeFileSync(Bank.accountsFileName, JSON.stringify(this.accounts))
+
+    // const accounts: object[] = []
+    // for (const account of this.accounts) {
+    //   accounts.push(account.toJSON())
+    // }
+    // fs.writeFileSync(Bank.accountsFileName, JSON.stringify(this.accounts))
+  }
+
+  static load(bankId: number): Bank {
+    type BankModel = { id: number; name: string }
+    const sql = 'select id,name from bank where id=?'
+    const bank = Database.queryOne<BankModel>(sql, [bankId])
+
+    if (!bank) throw new Error('Bank not found')
+
+    return new Bank(bank.id, bank.name)
+
+    // const bank = new Bank(bankData.id, bankData.name)
+
+    // for (const model of bankData.accounts) {
+    //   let account: Account
+
+    //   switch (model.type) {
+    //     case 0:
+    //       account = Account.fromJSON(model)
+    //       break
+    //     case 1:
+    //       account = SpecialAccount.fromJSON(model)
+    //       break
+    //     default:
+    //       throw new Error(`Invalid account type: ${model.type}`)
+    //   }
+    //   bank.addAccount(account)
+    // }
+  }
+}
