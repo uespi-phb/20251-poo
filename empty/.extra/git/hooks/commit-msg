@@ -27,6 +27,8 @@ if ! [[ "${message}" =~ ${regex} ]]; then
   echo -e "${red}#    Invalid Git Commit Message    #"
   echo -e "${red}####################################"
   echo
+  echo -e "Your commint message was rejected because it does not follow the Conventional Commits specification."
+  echo
   echo -e "${white}commit message: ${red}${message}"
   echo -e "${white}correct format: ${green}<type>: <subject>"
   echo

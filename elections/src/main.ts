@@ -1,6 +1,6 @@
 import { SQLiteDatabase } from './sqlitedb'
 
-type RowModel = {
+type BallotBoxModel = {
   id: number
   numero: number
   secao: number
@@ -13,18 +13,19 @@ const db = new SQLiteDatabase(dbName)
 
 db.connect()
 
-const rows = db.queryAny('select id,numero,secao,zona,municipio from urna')
+const rows = db.queryAny<BallotBoxModel>('select id,numero,secao,zona,municipio from urna')
 
-for (const row of rows) {
-  const data = row as RowModel
-  console.log(`${data.numero} --> ${data.id}`)
-  db.queryNone('update votacao set urna=? where urna=? and secao=? and zona=? and municipio=?', [
-    data.id,
-    data.numero,
-    data.secao,
-    data.zona,
-    data.municipio,
-  ])
-}
+db.transaction(() => {
+  for (const row of rows) {
+    console.log(`${row.numero} --> ${row.id}`)
+    db.queryNone('update votacao set urna=? where urna=? and secao=? and zona=? and municipio=?', [
+      row.id,
+      row.numero,
+      row.secao,
+      row.zona,
+      row.municipio,
+    ])
+  }
+})
 
 db.disconnect()

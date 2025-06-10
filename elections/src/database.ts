@@ -5,5 +5,9 @@ export interface Database {
   isConnected(): boolean
 
   queryNone(sql: string, params?: unknown[]): void
-  queryAny(sql: string, params?: unknown[]): unknown[]
+  queryAny<T = unknown>(sql: string, params?: unknown[]): T[]
+
+  transaction(callback: TransactionCallback): void
 }
+
+export type TransactionCallback = () => void

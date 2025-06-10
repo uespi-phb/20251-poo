@@ -2,7 +2,7 @@ import fs from 'fs'
 
 import BetterSqlite3, { Database as BSQLiteDatabase } from 'better-sqlite3'
 
-import { Database } from './database'
+import { Database, TransactionCallback } from './database'
 
 export class SQLiteDatabase implements Database {
   private readonly dbName: string
@@ -32,10 +32,24 @@ export class SQLiteDatabase implements Database {
     query?.run(params)
   }
 
-  queryAny(sql: string, params?: unknown[]): unknown[] {
+  private assertConnection(): void {
     if (this.db === undefined) throw new Error('Not connected to dabatase')
-    const query = this.db.prepare(sql)
-    if (params) return query.all(...params)
-    return query.all()
+  }
+
+  queryAny<T = unknown>(sql: string, params?: unknown[]): T[] {
+    this.assertConnection()
+    const query = this.db!.prepare(sql)
+    if (params) return query.all(...params) as T[]
+    return query.all() as T[]
+  }
+
+  transaction(callback: TransactionCallback): void {
+    this.assertConnection()
+    const wrapped = this.db!.transaction(callback)
+    try {
+      wrapped()
+    } catch {
+      throw new Error('Error during transaction')
+    }
   }
 }
