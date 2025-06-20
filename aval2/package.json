@@ -4,7 +4,7 @@
     "description": "Node, Typescript, Jest, ESLint Template Project",
     "main": "src/main.js",
     "scripts": {
-        "dev": "ts-node -r tsconfig-paths/register ./src/v2/main.ts --files",
+        "dev": "ts-node -r tsconfig-paths/register ./src/main.ts --files",
         "start": "node ./build/src/index.js",
         "build": "rimraf ./build && tsc && tsc-alias",
         "lint": "eslint .",

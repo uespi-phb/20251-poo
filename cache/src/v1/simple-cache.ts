@@ -13,7 +13,6 @@ export class SimpleCache<T extends Cacheble> {
   set(item: T): void {
     this.cache[item.key] = item
   }
-
   get(key: string): T {
     return this.cache[key] ?? null
   }
