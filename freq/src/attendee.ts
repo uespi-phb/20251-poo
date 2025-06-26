@@ -1,5 +1,5 @@
 export type AttendeeModel = {
-  id: number
+  id?: number
   cpf: string
   name: string
   phone: string

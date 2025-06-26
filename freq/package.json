@@ -23,12 +23,14 @@
         "rimraf": "^4"
     },
     "dependencies": {
-        "better-sqlite3": "^12.1.0"
+        "better-sqlite3": "^12.1.0",
+        "readline-sync": "^1.4.10"
     },
     "devDependencies": {
         "@types/better-sqlite3": "^7.6.13",
         "@types/jest": "^29",
         "@types/node": "^22",
+        "@types/readline-sync": "^1.4.8",
         "@typescript-eslint/eslint-plugin": "^8",
         "@typescript-eslint/parser": "^8",
         "eslint": "^9",
